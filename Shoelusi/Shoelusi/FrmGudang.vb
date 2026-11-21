@@ -3,6 +3,7 @@ Imports System.Data
 Imports System.Data.OleDb
 Imports System.Windows.Forms
 Imports System.Globalization
+Imports System.Linq
 
 Namespace Shoelusi
     Partial Public Class FrmGudang
