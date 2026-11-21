@@ -1,0 +1,32 @@
+C:\Users\MSI\Downloads\Shoelusi_Revisi (4)\Shoelusi\Shoelusi\bin\Debug\shoelusi_logo.jpg
+C:\Users\MSI\Downloads\Shoelusi_Revisi (4)\Shoelusi\Shoelusi\bin\Debug\Shoelusi.exe.config
+C:\Users\MSI\Downloads\Shoelusi_Revisi (4)\Shoelusi\Shoelusi\bin\Debug\Shoelusi.exe
+C:\Users\MSI\Downloads\Shoelusi_Revisi (4)\Shoelusi\Shoelusi\bin\Debug\Shoelusi.pdb
+C:\Users\MSI\Downloads\Shoelusi_Revisi (4)\Shoelusi\Shoelusi\obj\Debug\Shoelusi.vbproj.AssemblyReference.cache
+C:\Users\MSI\Downloads\Shoelusi_Revisi (4)\Shoelusi\Shoelusi\obj\Debug\Shoelusi.Form1.resources
+C:\Users\MSI\Downloads\Shoelusi_Revisi (4)\Shoelusi\Shoelusi\obj\Debug\Shoelusi.Form2.resources
+C:\Users\MSI\Downloads\Shoelusi_Revisi (4)\Shoelusi\Shoelusi\obj\Debug\Shoelusi.FrmKasir.resources
+C:\Users\MSI\Downloads\Shoelusi_Revisi (4)\Shoelusi\Shoelusi\obj\Debug\Shoelusi.FrmTeknisi.resources
+C:\Users\MSI\Downloads\Shoelusi_Revisi (4)\Shoelusi\Shoelusi\obj\Debug\Shoelusi.FrmGudang.resources
+C:\Users\MSI\Downloads\Shoelusi_Revisi (4)\Shoelusi\Shoelusi\obj\Debug\Shoelusi.FrmPemilik.resources
+C:\Users\MSI\Downloads\Shoelusi_Revisi (4)\Shoelusi\Shoelusi\obj\Debug\Resources.resources
+C:\Users\MSI\Downloads\Shoelusi_Revisi (4)\Shoelusi\Shoelusi\obj\Debug\Shoelusi.vbproj.GenerateResource.cache
+C:\Users\MSI\Downloads\Shoelusi_Revisi (4)\Shoelusi\Shoelusi\obj\Debug\Shoelusi.vbproj.CoreCompileInputs.cache
+C:\Users\MSI\Downloads\Shoelusi_Revisi (4)\Shoelusi\Shoelusi\obj\Debug\Shoelusi.exe
+C:\Users\MSI\Downloads\Shoelusi_Revisi (4)\Shoelusi\Shoelusi\obj\Debug\Shoelusi.pdb
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi\Shoelusi\bin\Debug\shoelusi_logo.jpg
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi\Shoelusi\bin\Debug\Shoelusi.exe.config
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi\Shoelusi\bin\Debug\Shoelusi.exe
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi\Shoelusi\bin\Debug\Shoelusi.pdb
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi\Shoelusi\obj\Debug\Shoelusi.vbproj.AssemblyReference.cache
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi\Shoelusi\obj\Debug\Shoelusi.Form1.resources
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi\Shoelusi\obj\Debug\Shoelusi.Form2.resources
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi\Shoelusi\obj\Debug\Shoelusi.FrmKasir.resources
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi\Shoelusi\obj\Debug\Shoelusi.FrmTeknisi.resources
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi\Shoelusi\obj\Debug\Shoelusi.FrmGudang.resources
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi\Shoelusi\obj\Debug\Shoelusi.FrmPemilik.resources
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi\Shoelusi\obj\Debug\Resources.resources
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi\Shoelusi\obj\Debug\Shoelusi.vbproj.GenerateResource.cache
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi\Shoelusi\obj\Debug\Shoelusi.vbproj.CoreCompileInputs.cache
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi\Shoelusi\obj\Debug\Shoelusi.exe
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi\Shoelusi\obj\Debug\Shoelusi.pdb
