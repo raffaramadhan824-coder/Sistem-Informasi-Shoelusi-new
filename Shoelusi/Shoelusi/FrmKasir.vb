@@ -8,7 +8,6 @@ Imports System.Windows.Forms
 Namespace Shoelusi
     Partial Public Class FrmKasir
         Private activeAccountId As String
-        Private orderCatalog As DataTable
 
         Private productPage As TabPage
         Private txtProdukKodeRuntime As TextBox
@@ -219,11 +218,6 @@ Namespace Shoelusi
         End Sub
 
         Private Sub ReloadData()
-            orderCatalog = ReadRows(OrderRates)
-            If orderCatalog.Columns.Contains("Kode_Pesanan") Then
-                orderCatalog.PrimaryKey = {orderCatalog.Columns("Kode_Pesanan")}
-            End If
-
             Dim codes As New AutoCompleteStringCollection()
             For Each order As DataRow In ReadRows("SELECT Kode_Pesanan FROM Data_Pemesanan ORDER BY Kode_Pesanan").Rows
                 codes.Add(CStr(order("Kode_Pesanan")))
