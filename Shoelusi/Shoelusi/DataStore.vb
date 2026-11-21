@@ -1,4 +1,5 @@
-﻿Imports System
+﻿
+Imports System
 Imports System.Data
 Imports System.Data.OleDb
 Imports System.Globalization
@@ -7,6 +8,7 @@ Imports System.Text.RegularExpressions
 
 Namespace Shoelusi
     Friend Module DataStore
+
         Friend Const Materials As String = "Data_Bahan_Baku"
         Friend Const Stock As String = "Data_Persediaan"
         Friend Const Purchases As String = "Data_Pengadaan_Bahan_Baku"
@@ -18,8 +20,9 @@ Namespace Shoelusi
         Friend Const Products As String = "Data_Produk"
 
         Friend Const SelectMaterials As String =
-         "SELECT b.Kode_Bahan_Baku, b.Nama_Bahan_Baku, s.Jumlah_Stok_Bahan_Baku, b.Satuan, b.Stok_Minimum, b.Jenis_Bahan_Baku, b.Harga_Acuan, IIf(b.Status_Bahan_Baku = 'Aktif', True, False) AS StatusAktif " &
-           "FROM Data_Bahan_Baku AS b LEFT JOIN Data_Persediaan AS s ON b.Kode_Bahan_Baku = s.Kode_Bahan_Baku ORDER BY b.Kode_Bahan_Baku"
+            "SELECT b.Kode_Bahan_Baku, b.Nama_Bahan_Baku, s.Jumlah_Stok_Bahan_Baku, b.Satuan, b.Stok_Minimum, b.Jenis_Bahan_Baku, b.Harga_Acuan, IIf(b.Status_Bahan_Baku = 'Aktif', True, False) AS StatusAktif " &
+            "FROM Data_Bahan_Baku AS b LEFT JOIN Data_Persediaan AS s ON b.Kode_Bahan_Baku = s.Kode_Bahan_Baku ORDER BY b.Kode_Bahan_Baku"
+
         Friend Const SelectPurchases As String =
             "SELECT p.Kode_Pengadaan, p.Tanggal_Pengadaan, p.Kode_Bahan_Baku, p.Jumlah_Pembelian, p.Status_Pengadaan, p.Harga_Satuan, b.Nama_Bahan_Baku, p.Subtotal_Pembelian " &
             "FROM Data_Pengadaan_Bahan_Baku AS p INNER JOIN Data_Bahan_Baku AS b ON p.Kode_Bahan_Baku = b.Kode_Bahan_Baku ORDER BY p.Kode_Pengadaan"
@@ -75,42 +78,76 @@ Namespace Shoelusi
             "ORDER BY s.Kode_Bahan_Baku"
 
         Friend Function RequireCode(value As String, prefix As String) As String
-            Dim normalized = value.Trim().ToUpperInvariant()
+            Dim normalized As String = If(value, "").Trim().ToUpperInvariant()
+
             If Not Regex.IsMatch(normalized, "\A" & prefix & "[0-9]{3,12}\z") Then
                 Throw New ArgumentException("Gunakan kode dengan awalan " & prefix & " dan minimal tiga angka, misalnya " & prefix & "001.")
             End If
+
             Return normalized
         End Function
 
         Friend Function RequireText(value As String, label As String) As String
-            If String.IsNullOrWhiteSpace(value) Then Throw New ArgumentException("Isi " & label & ".")
+            If String.IsNullOrWhiteSpace(value) Then
+                Throw New ArgumentException("Isi " & label & ".")
+            End If
+
             Return value.Trim()
         End Function
 
         Friend Function TryReadDate(value As String, ByRef parsed As DateTime) As Boolean
-            Return DateTime.TryParseExact(value, {"d/M/yyyy", "yyyy-MM-dd"}, CultureInfo.InvariantCulture, DateTimeStyles.None, parsed)
+            Return DateTime.TryParseExact(
+                value,
+                New String() {"d/M/yyyy", "yyyy-MM-dd"},
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.None,
+                parsed
+            )
         End Function
 
         Friend Function RequireDate(value As String) As DateTime
             Dim parsed As DateTime
-            If Not TryReadDate(value, parsed) Then Throw New ArgumentException("Pilih tanggal yang valid.")
+
+            If Not TryReadDate(value, parsed) Then
+                Throw New ArgumentException("Pilih tanggal yang valid.")
+            End If
+
             Return parsed
         End Function
 
         Friend Function TryReadAmount(value As String, ByRef parsed As Decimal) As Boolean
-            Return Decimal.TryParse(value.Replace(","c, "."c), NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, parsed) AndAlso parsed >= 0D
+            If value Is Nothing Then Return False
+
+            Return Decimal.TryParse(
+                value.Replace(","c, "."c),
+                NumberStyles.AllowDecimalPoint,
+                CultureInfo.InvariantCulture,
+                parsed
+            ) AndAlso parsed >= 0D
         End Function
 
-        Friend Function RequireAmount(value As String, label As String, Optional allowZero As Boolean = False) As Decimal
+        Friend Function RequireAmount(
+            value As String,
+            label As String,
+            Optional allowZero As Boolean = False
+        ) As Decimal
+
             Dim parsed As Decimal
-            If Not TryReadAmount(value, parsed) OrElse (parsed = 0D AndAlso Not allowZero) Then
+
+            If Not TryReadAmount(value, parsed) OrElse
+               (parsed = 0D AndAlso Not allowZero) Then
+
                 Throw New ArgumentException("Isi " & label & " dengan angka yang sesuai.")
             End If
+
             Return parsed
         End Function
 
         Friend Function PreviewTotal(quantity As Decimal, price As Decimal) As String
-            If price > 1D AndAlso quantity > Decimal.MaxValue / price Then Return ""
+            If price > 1D AndAlso quantity > Decimal.MaxValue / price Then
+                Return ""
+            End If
+
             Return DecimalText(quantity * price)
         End Function
 
@@ -122,31 +159,63 @@ Namespace Shoelusi
             Return value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)
         End Function
 
-        Friend Sub SaveRecord(table As String, key As String, previousCode As String, code As String,
-                              columns As String(), values As Object(), Optional transaction As OleDbTransaction = Nothing)
-            If previousCode IsNot Nothing AndAlso Not String.Equals(code, previousCode, StringComparison.OrdinalIgnoreCase) Then
+        Friend Sub SaveRecord(
+            table As String,
+            key As String,
+            previousCode As String,
+            code As String,
+            columns As String(),
+            values As Object(),
+            Optional transaction As OleDbTransaction = Nothing
+        )
+
+            If previousCode IsNot Nothing AndAlso
+               Not String.Equals(code, previousCode, StringComparison.OrdinalIgnoreCase) Then
+
                 Throw New ArgumentException("Kode utama tidak dapat diubah. Gunakan Bersihkan untuk menambah kode baru.")
             End If
+
             Dim sql As String
             Dim parameters As Object()
+
             If previousCode Is Nothing Then
-                sql = "INSERT INTO [" & table & "] ([" & key & "], [" & String.Join("], [", columns) & "]) VALUES (" &
+                sql = "INSERT INTO [" & table & "] ([" & key & "], [" &
+                      String.Join("], [", columns) & "]) VALUES (" &
                       String.Join(", ", Enumerable.Repeat("?", columns.Length + 1)) & ")"
-                parameters = {code}
-                parameters = parameters.Concat(values).ToArray()
+
+                parameters = New Object() {code}.Concat(values).ToArray()
             Else
-                sql = "UPDATE [" & table & "] SET " & String.Join(", ", columns.Select(Function(column) "[" & column & "] = ?")) &
+                sql = "UPDATE [" & table & "] SET " &
+                      String.Join(", ", columns.Select(
+                          Function(column) "[" & column & "] = ?"
+                      )) &
                       " WHERE [" & key & "] = ?"
+
                 parameters = values.Concat(New Object() {previousCode}).ToArray()
             End If
-            Dim changed = If(transaction Is Nothing, ExecuteChange(sql, parameters), ExecuteInTransaction(transaction, sql, parameters))
-            If changed <> 1 Then Throw New InvalidOperationException("Data yang dipilih sudah tidak tersedia.")
-        End Sub
 
-        Friend Sub DeleteRecord(table As String, key As String, code As String)
-            If ExecuteChange("DELETE FROM [" & table & "] WHERE [" & key & "] = ?", code) <> 1 Then
+            Dim changed As Integer
+
+            If transaction Is Nothing Then
+                changed = ExecuteChange(sql, parameters)
+            Else
+                changed = ExecuteInTransaction(transaction, sql, parameters)
+            End If
+
+            If changed <> 1 Then
                 Throw New InvalidOperationException("Data yang dipilih sudah tidak tersedia.")
             End If
         End Sub
+
+        Friend Sub DeleteRecord(table As String, key As String, code As String)
+            If ExecuteChange(
+                "DELETE FROM [" & table & "] WHERE [" & key & "] = ?",
+                code
+            ) <> 1 Then
+
+                Throw New InvalidOperationException("Data yang dipilih sudah tidak tersedia.")
+            End If
+        End Sub
+
     End Module
 End Namespace
