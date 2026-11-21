@@ -22,6 +22,7 @@ Namespace Shoelusi
             Dim statusColumn As New DataGridViewCheckBoxColumn()
             statusColumn.Name = "StatusBahanAktif"
             statusColumn.HeaderText = "Status"
+            statusColumn.ToolTipText = "Centang = Aktif, kosong = Nonaktif"
             statusColumn.Width = 60
             statusColumn.TrueValue = True
             statusColumn.FalseValue = False
@@ -173,9 +174,15 @@ Namespace Shoelusi
             Dim referencePrice = RequireAmount(fields(6), "harga acuan", True)
             Using connection = GetConnection()
                 Using transaction = connection.BeginTransaction()
-                    SaveRecord(Materials, "Kode_Bahan_Baku", previousCode, code,
-                               {"Nama_Bahan_Baku", "Satuan", "Stok_Minimum", "Jenis_Bahan_Baku", "Harga_Acuan"},
-                               {name, unit, minimum, category, referencePrice}, transaction)
+                    If previousCode Is Nothing Then
+                        SaveRecord(Materials, "Kode_Bahan_Baku", Nothing, code,
+                                   {"Nama_Bahan_Baku", "Satuan", "Stok_Minimum", "Jenis_Bahan_Baku", "Harga_Acuan", "Status_Bahan_Baku"},
+                                   {name, unit, minimum, category, referencePrice, "Aktif"}, transaction)
+                    Else
+                        SaveRecord(Materials, "Kode_Bahan_Baku", previousCode, code,
+                                   {"Nama_Bahan_Baku", "Satuan", "Stok_Minimum", "Jenis_Bahan_Baku", "Harga_Acuan"},
+                                   {name, unit, minimum, category, referencePrice}, transaction)
+                    End If
                     Dim changed = ExecuteInTransaction(transaction,
                         "UPDATE Data_Persediaan SET Jumlah_Stok_Bahan_Baku = ?, Tanggal_Update_Stok = ? WHERE Kode_Bahan_Baku = ?",
                         quantity, DateTime.Today, code)
