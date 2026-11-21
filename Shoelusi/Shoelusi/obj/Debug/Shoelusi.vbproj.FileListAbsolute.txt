@@ -30,3 +30,19 @@ D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi\Shoelusi\obj\Debug\Shoelusi.
 D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi\Shoelusi\obj\Debug\Shoelusi.vbproj.CoreCompileInputs.cache
 D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi\Shoelusi\obj\Debug\Shoelusi.exe
 D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi\Shoelusi\obj\Debug\Shoelusi.pdb
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi New\Sistem-Informasi-Shoelusi-new\Shoelusi\Shoelusi\bin\Debug\shoelusi_logo.jpg
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi New\Sistem-Informasi-Shoelusi-new\Shoelusi\Shoelusi\bin\Debug\Shoelusi.exe.config
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi New\Sistem-Informasi-Shoelusi-new\Shoelusi\Shoelusi\bin\Debug\Shoelusi.exe
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi New\Sistem-Informasi-Shoelusi-new\Shoelusi\Shoelusi\bin\Debug\Shoelusi.pdb
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi New\Sistem-Informasi-Shoelusi-new\Shoelusi\Shoelusi\obj\Debug\Shoelusi.vbproj.AssemblyReference.cache
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi New\Sistem-Informasi-Shoelusi-new\Shoelusi\Shoelusi\obj\Debug\Shoelusi.Form1.resources
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi New\Sistem-Informasi-Shoelusi-new\Shoelusi\Shoelusi\obj\Debug\Shoelusi.Form2.resources
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi New\Sistem-Informasi-Shoelusi-new\Shoelusi\Shoelusi\obj\Debug\Shoelusi.FrmKasir.resources
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi New\Sistem-Informasi-Shoelusi-new\Shoelusi\Shoelusi\obj\Debug\Shoelusi.FrmTeknisi.resources
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi New\Sistem-Informasi-Shoelusi-new\Shoelusi\Shoelusi\obj\Debug\Shoelusi.FrmGudang.resources
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi New\Sistem-Informasi-Shoelusi-new\Shoelusi\Shoelusi\obj\Debug\Shoelusi.FrmPemilik.resources
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi New\Sistem-Informasi-Shoelusi-new\Shoelusi\Shoelusi\obj\Debug\Resources.resources
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi New\Sistem-Informasi-Shoelusi-new\Shoelusi\Shoelusi\obj\Debug\Shoelusi.vbproj.GenerateResource.cache
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi New\Sistem-Informasi-Shoelusi-new\Shoelusi\Shoelusi\obj\Debug\Shoelusi.vbproj.CoreCompileInputs.cache
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi New\Sistem-Informasi-Shoelusi-new\Shoelusi\Shoelusi\obj\Debug\Shoelusi.exe
+D:\PRAK APSI\Tubes\N5_TUBESS APSI\Shoelusi\Shoelusi New\Sistem-Informasi-Shoelusi-new\Shoelusi\Shoelusi\obj\Debug\Shoelusi.pdb
