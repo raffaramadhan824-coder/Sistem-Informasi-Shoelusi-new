@@ -150,13 +150,13 @@ Namespace Shoelusi
         End Function
 
         Private Function AddProductTextBox(parent As Control, caption As String, x As Integer, y As Integer,
-                                           width As Integer, readOnly As Boolean) As TextBox
+                                           width As Integer, isReadOnly As Boolean) As TextBox
             AddProductLabel(parent, caption, x, y - 24, width)
             Dim input As New TextBox With {
                 .Font = New Font("Arial", 10.0!),
                 .Location = New Point(x, y),
                 .Size = New Size(width, 27),
-                .ReadOnly = readOnly
+                .ReadOnly = isReadOnly
             }
             parent.Controls.Add(input)
             Return input
