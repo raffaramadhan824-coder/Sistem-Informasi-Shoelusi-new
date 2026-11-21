@@ -96,7 +96,6 @@ Partial Public Class FrmKasir
             Me.Label1 = New System.Windows.Forms.Label()
             Me.TextBox1 = New System.Windows.Forms.TextBox()
             Me.Label2 = New System.Windows.Forms.Label()
-            Me.TextBox2 = New System.Windows.Forms.TextBox()
             Me.Label3 = New System.Windows.Forms.Label()
             Me.Label4 = New System.Windows.Forms.Label()
             Me.TextBox3 = New System.Windows.Forms.TextBox()
@@ -109,7 +108,6 @@ Partial Public Class FrmKasir
             Me.Button3 = New System.Windows.Forms.Button()
             Me.Button4 = New System.Windows.Forms.Button()
             Me.Label7 = New System.Windows.Forms.Label()
-            Me.TextBox6 = New System.Windows.Forms.TextBox()
             Me.TextBox7 = New System.Windows.Forms.TextBox()
             Me.Label8 = New System.Windows.Forms.Label()
             Me.TextBox8 = New System.Windows.Forms.TextBox()
@@ -117,6 +115,8 @@ Partial Public Class FrmKasir
             Me.TextBox9 = New System.Windows.Forms.TextBox()
             Me.Label10 = New System.Windows.Forms.Label()
             Me.DataGridView1 = New System.Windows.Forms.DataGridView()
+            Me.ComboBox1 = New System.Windows.Forms.ComboBox()
+            Me.ComboBox2 = New System.Windows.Forms.ComboBox()
             Me.tabMain.SuspendLayout()
             Me.tpPenjualan.SuspendLayout()
             Me.pnlPenjualan.SuspendLayout()
@@ -984,17 +984,17 @@ Partial Public Class FrmKasir
             'Panel2
             '
             Me.Panel2.BackColor = System.Drawing.SystemColors.ActiveCaption
+            Me.Panel2.Controls.Add(Me.ComboBox2)
+            Me.Panel2.Controls.Add(Me.ComboBox1)
             Me.Panel2.Controls.Add(Me.Label10)
             Me.Panel2.Controls.Add(Me.TextBox9)
             Me.Panel2.Controls.Add(Me.Label9)
             Me.Panel2.Controls.Add(Me.TextBox8)
             Me.Panel2.Controls.Add(Me.Label8)
             Me.Panel2.Controls.Add(Me.TextBox7)
-            Me.Panel2.Controls.Add(Me.TextBox6)
             Me.Panel2.Controls.Add(Me.Label1)
             Me.Panel2.Controls.Add(Me.TextBox1)
             Me.Panel2.Controls.Add(Me.Label2)
-            Me.Panel2.Controls.Add(Me.TextBox2)
             Me.Panel2.Controls.Add(Me.Label3)
             Me.Panel2.Controls.Add(Me.Label4)
             Me.Panel2.Controls.Add(Me.TextBox3)
@@ -1042,14 +1042,6 @@ Partial Public Class FrmKasir
             Me.Label2.TabIndex = 2
             Me.Label2.Text = "Kode Pesanan"
             Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-            '
-            'TextBox2
-            '
-            Me.TextBox2.Font = New System.Drawing.Font("Arial", 10.0!)
-            Me.TextBox2.Location = New System.Drawing.Point(217, 43)
-            Me.TextBox2.Name = "TextBox2"
-            Me.TextBox2.Size = New System.Drawing.Size(190, 27)
-            Me.TextBox2.TabIndex = 3
             '
             'Label3
             '
@@ -1187,14 +1179,6 @@ Partial Public Class FrmKasir
             Me.Label7.Text = "Detail Produk"
             Me.Label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
-            'TextBox6
-            '
-            Me.TextBox6.Font = New System.Drawing.Font("Arial", 10.0!)
-            Me.TextBox6.Location = New System.Drawing.Point(419, 43)
-            Me.TextBox6.Name = "TextBox6"
-            Me.TextBox6.Size = New System.Drawing.Size(190, 27)
-            Me.TextBox6.TabIndex = 22
-            '
             'TextBox7
             '
             Me.TextBox7.Font = New System.Drawing.Font("Arial", 10.0!)
@@ -1264,6 +1248,22 @@ Partial Public Class FrmKasir
             Me.DataGridView1.RowTemplate.Height = 24
             Me.DataGridView1.Size = New System.Drawing.Size(1150, 262)
             Me.DataGridView1.TabIndex = 4
+            '
+            'ComboBox1
+            '
+            Me.ComboBox1.FormattingEnabled = True
+            Me.ComboBox1.Location = New System.Drawing.Point(217, 44)
+            Me.ComboBox1.Name = "ComboBox1"
+            Me.ComboBox1.Size = New System.Drawing.Size(190, 27)
+            Me.ComboBox1.TabIndex = 29
+            '
+            'ComboBox2
+            '
+            Me.ComboBox2.FormattingEnabled = True
+            Me.ComboBox2.Location = New System.Drawing.Point(422, 42)
+            Me.ComboBox2.Name = "ComboBox2"
+            Me.ComboBox2.Size = New System.Drawing.Size(190, 27)
+            Me.ComboBox2.TabIndex = 30
             '
             'FrmKasir
             '
@@ -1387,7 +1387,6 @@ Partial Public Class FrmKasir
         Friend WithEvents Label1 As System.Windows.Forms.Label
         Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
         Friend WithEvents Label2 As System.Windows.Forms.Label
-        Friend WithEvents TextBox2 As System.Windows.Forms.TextBox
         Friend WithEvents Label3 As System.Windows.Forms.Label
         Friend WithEvents Label4 As System.Windows.Forms.Label
         Friend WithEvents TextBox3 As System.Windows.Forms.TextBox
@@ -1406,6 +1405,7 @@ Partial Public Class FrmKasir
         Friend WithEvents TextBox8 As System.Windows.Forms.TextBox
         Friend WithEvents Label8 As System.Windows.Forms.Label
         Friend WithEvents TextBox7 As System.Windows.Forms.TextBox
-        Friend WithEvents TextBox6 As System.Windows.Forms.TextBox
+        Friend WithEvents ComboBox2 As System.Windows.Forms.ComboBox
+        Friend WithEvents ComboBox1 As System.Windows.Forms.ComboBox
     End Class
 End Namespace
