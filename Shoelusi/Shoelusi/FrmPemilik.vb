@@ -4,9 +4,41 @@ Imports System.Windows.Forms
 Namespace Shoelusi
     Partial Public Class FrmPemilik
         Private activeAccountId As String
+        Private isReloadingSales As Boolean
 
         Public Sub New()
             InitializeComponent()
+            tpCekPenjualan.Text = "Penjualan"
+            lblTitleCekPenjualan.Text = "PENJUALAN"
+
+            Dim statusColumn As New DataGridViewCheckBoxColumn()
+            statusColumn.Name = "StatusPenjualanOwner"
+            statusColumn.HeaderText = "Status Penjualan"
+            statusColumn.ToolTipText = "Dicentang = Disetujui; kosong = Ditolak; tanda minus = Menunggu"
+            statusColumn.TrueValue = "Disetujui"
+            statusColumn.FalseValue = "Ditolak"
+            statusColumn.IndeterminateValue = "Menunggu"
+            statusColumn.ValueType = GetType(String)
+            statusColumn.ThreeState = True
+            statusColumn.Width = 110
+            dgvCekPenjualan.Columns.Add(statusColumn)
+
+            dgvCekPenjualan.ReadOnly = False
+            For Each column As DataGridViewColumn In dgvCekPenjualan.Columns
+                column.ReadOnly = True
+            Next
+            statusColumn.ReadOnly = False
+
+            AddHandler dgvCekPenjualan.CurrentCellDirtyStateChanged,
+                Sub(sender, e)
+                    If dgvCekPenjualan.IsCurrentCellDirty AndAlso
+                       dgvCekPenjualan.CurrentCell IsNot Nothing AndAlso
+                       dgvCekPenjualan.CurrentCell.OwningColumn.Name = "StatusPenjualanOwner" Then
+                        dgvCekPenjualan.CommitEdit(DataGridViewDataErrorContexts.Commit)
+                    End If
+                End Sub
+            AddHandler dgvCekPenjualan.CellValueChanged, AddressOf SaveSalesStatusFromGrid
+
             BindPageActions()
             BindSearch(dgvAkun)
             BindSearch(dgvPersetujuanBB)
@@ -44,7 +76,92 @@ Namespace Shoelusi
             LoadAccounts()
             LoadGrid(dgvPersetujuanBB, SelectApprovals)
             LoadGrid(dgvDataLayanan, SelectServices)
-            LoadGrid(dgvCekPenjualan, SelectSalesSummary)
+            ReloadSalesGrid()
+        End Sub
+
+        Private Sub ReloadSalesGrid()
+            isReloadingSales = True
+            Try
+                LoadGrid(dgvCekPenjualan, SelectSalesSummary, keyColumn:=0)
+            Finally
+                isReloadingSales = False
+            End Try
+        End Sub
+
+        Private Sub SaveSalesStatusFromGrid(sender As Object, e As DataGridViewCellEventArgs)
+            If isReloadingSales OrElse e.RowIndex < 0 OrElse e.ColumnIndex < 0 Then Return
+            If dgvCekPenjualan.Columns(e.ColumnIndex).Name <> "StatusPenjualanOwner" Then Return
+
+            Dim row = dgvCekPenjualan.Rows(e.RowIndex)
+            If row.IsNewRow OrElse row.Tag Is Nothing Then Return
+
+            Dim saleCode = Convert.ToString(row.Tag)
+            Dim newStatus = Convert.ToString(row.Cells(e.ColumnIndex).Value).Trim()
+
+            If newStatus <> "Menunggu" AndAlso newStatus <> "Disetujui" AndAlso newStatus <> "Ditolak" Then
+                MessageBox.Show("Status penjualan tidak dikenali.", "Penjualan")
+                ReloadSalesGrid()
+                Return
+            End If
+
+            Try
+                Dim currentSale = ReadRows(
+                    "SELECT Status_Penjualan FROM Data_Penjualan WHERE Kode_Penjualan = ?",
+                    saleCode)
+
+                If currentSale.Rows.Count <> 1 Then
+                    Throw New InvalidOperationException("Data penjualan sudah tidak tersedia.")
+                End If
+
+                Dim rawStatus As String = Nothing
+                If Not currentSale.Rows(0).IsNull("Status_Penjualan") Then
+                    rawStatus = Convert.ToString(currentSale.Rows(0)("Status_Penjualan")).Trim()
+                End If
+
+                Dim currentStatus = If(String.IsNullOrEmpty(rawStatus), "Menunggu", rawStatus)
+
+                If currentStatus <> "Menunggu" AndAlso currentStatus <> "Disetujui" AndAlso currentStatus <> "Ditolak" Then
+                    Throw New InvalidOperationException("Status penjualan di database tidak dikenali: " & currentStatus)
+                End If
+
+                If String.Equals(currentStatus, newStatus, StringComparison.OrdinalIgnoreCase) Then
+                    ReloadSalesGrid()
+                    Return
+                End If
+
+                Dim confirmation = MessageBox.Show(
+                    "Ubah status penjualan " & saleCode & " dari " & currentStatus & " menjadi " & newStatus & "?",
+                    "Konfirmasi Status Penjualan",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question)
+
+                If confirmation <> DialogResult.Yes Then
+                    ReloadSalesGrid()
+                    Return
+                End If
+
+                Dim changed As Integer
+                If rawStatus Is Nothing Then
+                    changed = ExecuteChange(
+                        "UPDATE Data_Penjualan SET Status_Penjualan = ? WHERE Kode_Penjualan = ? AND Status_Penjualan IS NULL",
+                        newStatus, saleCode)
+                Else
+                    changed = ExecuteChange(
+                        "UPDATE Data_Penjualan SET Status_Penjualan = ? WHERE Kode_Penjualan = ? AND Status_Penjualan = ?",
+                        newStatus, saleCode, rawStatus)
+                End If
+
+                If changed <> 1 Then
+                    Throw New InvalidOperationException("Status penjualan berubah. Muat ulang data dan coba lagi.")
+                End If
+
+                MessageBox.Show("Status penjualan berhasil diubah menjadi " & newStatus & ".", "Penjualan")
+                ReloadSalesGrid()
+
+            Catch ex As Exception
+                MessageBox.Show("Gagal memperbarui status penjualan. " & ex.Message, "Penjualan")
+                ReloadSalesGrid()
+            End Try
         End Sub
 
         Private Sub SaveService(previousCode As String, fields As String())

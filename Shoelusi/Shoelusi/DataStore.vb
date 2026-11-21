@@ -36,10 +36,10 @@ Namespace Shoelusi
             "FROM Data_Penggunaan_Bahan_Baku AS u INNER JOIN Data_Bahan_Baku AS b ON u.Kode_Bahan_Baku = b.Kode_Bahan_Baku ORDER BY u.Kode_Penggunaan"
 
         Friend Const SelectSales As String =
-            "SELECT Kode_Penjualan, Kode_Pemesanan, Tanggal_Pengambilan, Total_Biaya, Status_Pembayaran, Jumlah_Sepatu, Harga_Layanan_Transaksi FROM Data_Penjualan ORDER BY Kode_Penjualan"
+            "SELECT Kode_Penjualan, Kode_Pemesanan, Tanggal_Pengambilan, Total_Biaya, Status_Pembayaran, Jumlah_Sepatu, Harga_Layanan_Transaksi, Status_Penjualan FROM Data_Penjualan ORDER BY Kode_Penjualan"
 
         Friend Const SelectSalesSummary As String =
-            "SELECT Kode_Penjualan, Tanggal_Pengambilan, Kode_Pemesanan, Total_Biaya, Status_Pembayaran FROM Data_Penjualan ORDER BY Kode_Penjualan"
+            "SELECT Kode_Penjualan, Tanggal_Pengambilan, Kode_Pemesanan, Total_Biaya, Status_Pembayaran, Status_Penjualan FROM Data_Penjualan ORDER BY Kode_Penjualan"
 
         Friend Const SelectOrders As String =
             "SELECT o.Kode_Pesanan, o.Nama_Konsumen, o.Kode_Layanan, o.Tanggal_Pemesanan, o.Status_Pesanan, l.Nama_Layanan " &
