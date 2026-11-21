@@ -27,6 +27,11 @@ Namespace Shoelusi
             statusColumn.FalseValue = False
             statusColumn.ThreeState = False
             dgvPersediaanBB.Columns.Add(statusColumn)
+            dgvPersediaanBB.ReadOnly = False
+            For Each column As DataGridViewColumn In dgvPersediaanBB.Columns
+                column.ReadOnly = True
+            Next
+            statusColumn.ReadOnly = False
             AddHandler dgvPersediaanBB.CurrentCellDirtyStateChanged,
                 Sub(sender, e)
                     If dgvPersediaanBB.IsCurrentCellDirty AndAlso
