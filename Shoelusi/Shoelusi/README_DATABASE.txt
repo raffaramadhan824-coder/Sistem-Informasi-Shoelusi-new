@@ -25,9 +25,10 @@ menggunakan asumsi untuk demonstrasi. Status dan tanggal pengerjaan awal juga
 menggunakan asumsi.
 
 Sumber tampilan
-- Gudang: Persediaan menggunakan Data_Bahan_Baku dan Data_Persediaan.
-  Pengadaan dan riwayat EOQ/ROP menggunakan Data_Pengadaan_Bahan_Baku.
-  Cek Penggunaan dan Cek Penjualan memakai tabel transaksi masing-masing.
+- Gudang: Persediaan serta parameter dan hasil EOQ/ROP menggunakan
+  Data_Bahan_Baku dan Data_Persediaan. Transaksi pengadaan menggunakan
+  Data_Pengadaan_Bahan_Baku. Cek Penggunaan dan Cek Penjualan memakai
+  tabel transaksi masing-masing.
 - Kasir: Pemesanan, Penjualan, Layanan, dan Pengerjaan bersumber dari Access.
 - Teknisi: Cek Pesanan, Pengerjaan, dan Penggunaan Bahan Baku memakai Access.
 - Pemilik: Data Akun, Pengadaan, Layanan, dan Penjualan memakai Access.
@@ -47,12 +48,17 @@ Harga dan perhitungan
   subtotal terisi otomatis. Harga pada transaksi lama dipertahankan.
 - Penjualan: isi kode pesanan dan jumlah sepatu (pasang). Total mengikuti
   tarif layanan per pasang. Tarif transaksi lama dipertahankan.
-- EOQ dan ROP: pilih baris pengadaan agar aplikasi memuat parameter yang
-  tersedia dan menghitung otomatis. Klik Simpan untuk menyimpan hasil.
-  Jika data pendukung belum lengkap, isi parameter yang tersedia terlebih
-  dahulu. ROP bisa menggunakan safety stock yang sudah tercatat.
-- Pengadaan baru berstatus Menunggu. Gudang dapat menandai pengadaan yang
-  disetujui sebagai Diterima. Saldo aktual disesuaikan di tab Persediaan.
+- EOQ dan ROP dihitung berdasarkan bahan baku dan disimpan pada baris
+  Data_Persediaan sesuai Kode_Bahan_Baku. EOQ memakai permintaan tahunan,
+  biaya pemesanan, dan biaya penyimpanan. ROP memakai pemakaian harian,
+  lead time, dan safety stock.
+- ROP adalah batas pemicu pemesanan. Jika stok tersedia lebih kecil atau
+  sama dengan ROP, bahan baku perlu diajukan untuk pengadaan. EOQ menjadi
+  jumlah pembelian yang disarankan; jumlah transaksi tetap dapat disesuaikan.
+- Pengadaan tetap dicatat per transaksi di Data_Pengadaan_Bahan_Baku.
+  Pengadaan baru berstatus Menunggu dan diputuskan Pemilik. Saat Gudang
+  menerima pengadaan berstatus Disetujui, jumlah pembelian otomatis
+  ditambahkan ke Data_Persediaan dalam transaksi database yang sama.
 
 Harga bahan baku di bawah ini adalah estimasi acuan dalam rupiah per satuan
 database, dibulatkan dari contoh penawaran publik dan dapat diedit di Persediaan.
