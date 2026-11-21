@@ -74,18 +74,28 @@ Namespace Shoelusi
                 End Using
             End Using
         End Function
-
         Private Sub AddParameters(cmd As OleDbCommand, values As Object())
             For Each value As Object In values
-                Dim name As String = "@p" & cmd.Parameters.Count
-                If TypeOf value Is Integer Then
+                Dim name As String = "@" & cmd.Parameters.Count
+
+                If value Is Nothing OrElse Convert.IsDBNull(value) Then
+                    cmd.Parameters.Add(name, OleDbType.VarChar, 1).Value = DBNull.Value
+
+                ElseIf TypeOf value Is Integer Then
                     cmd.Parameters.Add(name, OleDbType.Integer).Value = value
-                ElseIf TypeOf value Is DateTime OrElse Convert.IsDBNull(value) Then
+
+                ElseIf TypeOf value Is DateTime Then
                     cmd.Parameters.Add(name, OleDbType.Date).Value = value
+
                 ElseIf TypeOf value Is Decimal Then
                     cmd.Parameters.Add(name, OleDbType.Currency).Value = value
+
+                ElseIf TypeOf value Is Boolean Then
+                    cmd.Parameters.Add(name, OleDbType.Boolean).Value = value
+
                 Else
-                    cmd.Parameters.Add(name, OleDbType.VarWChar, Math.Max(1, CStr(value).Length)).Value = value
+                    Dim textValue As String = Convert.ToString(value)
+                    cmd.Parameters.Add(name, OleDbType.VarChar, Math.Max(1, textValue.Length)).Value = textValue
                 End If
             Next
         End Sub
