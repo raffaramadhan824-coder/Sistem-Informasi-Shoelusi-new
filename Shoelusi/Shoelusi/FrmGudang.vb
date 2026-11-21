@@ -9,6 +9,7 @@ Namespace Shoelusi
     Partial Public Class FrmGudang
         Private activeAccountId As String
         Private materialCatalog As DataTable
+        Private isReloadingData As Boolean
         Private storedSafetyStock As Double?
         Private storedDemand As String
         Private storedLeadTime As String
@@ -18,6 +19,29 @@ Namespace Shoelusi
             InitializeComponent()
             dgvPersediaanBB.Columns.Add("JenisBahan", "Jenis Bahan")
             dgvPersediaanBB.Columns.Add("HargaAcuan", "Harga Acuan (Rp)")
+            Dim statusColumn As New DataGridViewCheckBoxColumn()
+            statusColumn.Name = "StatusBahanAktif"
+            statusColumn.HeaderText = "Status"
+            statusColumn.ToolTipText = "Centang = Aktif, kosong = Nonaktif"
+            statusColumn.Width = 60
+            statusColumn.TrueValue = True
+            statusColumn.FalseValue = False
+            statusColumn.ThreeState = False
+            dgvPersediaanBB.Columns.Add(statusColumn)
+            dgvPersediaanBB.ReadOnly = False
+            For Each column As DataGridViewColumn In dgvPersediaanBB.Columns
+                column.ReadOnly = True
+            Next
+            statusColumn.ReadOnly = False
+            AddHandler dgvPersediaanBB.CurrentCellDirtyStateChanged,
+                Sub(sender, e)
+                    If dgvPersediaanBB.IsCurrentCellDirty AndAlso
+                       dgvPersediaanBB.CurrentCell IsNot Nothing AndAlso
+                       dgvPersediaanBB.CurrentCell.OwningColumn.Name = "StatusBahanAktif" Then
+                        dgvPersediaanBB.CommitEdit(DataGridViewDataErrorContexts.Commit)
+                    End If
+                End Sub
+            AddHandler dgvPersediaanBB.CellValueChanged, AddressOf SaveMaterialStatusFromGrid
             dgvPengadaanBB.Columns.Add("HargaSatuan", "Harga Satuan")
             dgvPengadaanBB.Columns.Add("NamaBahan", "Nama Bahan")
             dgvPengadaanBB.Columns.Add("Subtotal", "Total (Rp)")
@@ -75,8 +99,10 @@ Namespace Shoelusi
             AddHandler btnResetROP.Click, Sub(sender, e) ResetROP()
         End Sub
 
-        Private Sub ReloadData()
-            materialCatalog = ReadRows("SELECT Kode_Bahan_Baku, Harga_Acuan FROM Data_Bahan_Baku")
+        Private Sub ReloadMaterialCatalog()
+            materialCatalog = ReadRows(
+                "SELECT Kode_Bahan_Baku, Harga_Acuan FROM Data_Bahan_Baku WHERE Status_Bahan_Baku = ?",
+                "Aktif")
             materialCatalog.PrimaryKey = {materialCatalog.Columns("Kode_Bahan_Baku")}
             Dim codes As New AutoCompleteStringCollection()
             For Each material As DataRow In materialCatalog.Rows
@@ -85,12 +111,52 @@ Namespace Shoelusi
             txtPengadaanNama.AutoCompleteCustomSource = codes
             txtPengadaanNama.AutoCompleteSource = AutoCompleteSource.CustomSource
             txtPengadaanNama.AutoCompleteMode = AutoCompleteMode.SuggestAppend
-            LoadGrid(dgvPersediaanBB, SelectMaterials)
-            LoadGrid(dgvPengadaanBB, SelectPurchases)
-            ReloadUsageGrid()
-            LoadGrid(dgvCekPenjualan, SelectSalesSummary)
-            LoadGrid(dgvHitungEOQ, SelectEoq, keyColumn:=5)
-            LoadGrid(dgvHitungROP, SelectRop, keyColumn:=7)
+        End Sub
+
+        Private Sub ReloadData()
+            isReloadingData = True
+            Try
+                ReloadMaterialCatalog()
+                LoadGrid(dgvPersediaanBB, SelectMaterials)
+                LoadGrid(dgvPengadaanBB, SelectPurchases)
+                ReloadUsageGrid()
+                LoadGrid(dgvCekPenjualan, SelectSalesSummary)
+                LoadGrid(dgvHitungEOQ, SelectEoq, keyColumn:=5)
+                LoadGrid(dgvHitungROP, SelectRop, keyColumn:=7)
+            Finally
+                isReloadingData = False
+            End Try
+        End Sub
+
+        Private Sub SaveMaterialStatusFromGrid(sender As Object, e As DataGridViewCellEventArgs)
+            If isReloadingData OrElse e.RowIndex < 0 OrElse e.ColumnIndex < 0 Then Return
+            If dgvPersediaanBB.Columns(e.ColumnIndex).Name <> "StatusBahanAktif" Then Return
+
+            Dim row = dgvPersediaanBB.Rows(e.RowIndex)
+            If row.IsNewRow OrElse row.Tag Is Nothing Then Return
+
+            Dim newStatus = If(Convert.ToBoolean(row.Cells(e.ColumnIndex).Value), "Aktif", "Nonaktif")
+
+            Try
+                Dim changed = ExecuteChange(
+                    "UPDATE Data_Bahan_Baku SET Status_Bahan_Baku = ? WHERE Kode_Bahan_Baku = ?",
+                    newStatus, Convert.ToString(row.Tag))
+
+                If changed <> 1 Then
+                    Throw New InvalidOperationException("Data bahan baku yang dipilih sudah tidak tersedia.")
+                End If
+
+                ReloadMaterialCatalog()
+            Catch ex As Exception
+                MessageBox.Show("Gagal mengubah status bahan baku. " & ex.Message,
+                                "Status Bahan Baku", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Try
+                    ReloadData()
+                Catch reloadError As Exception
+                    MessageBox.Show("Tabel gagal dimuat ulang. " & reloadError.Message,
+                                    "Status Bahan Baku", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                End Try
+            End Try
         End Sub
 
         Private Sub ReloadUsageGrid()
@@ -108,9 +174,15 @@ Namespace Shoelusi
             Dim referencePrice = RequireAmount(fields(6), "harga acuan", True)
             Using connection = GetConnection()
                 Using transaction = connection.BeginTransaction()
-                    SaveRecord(Materials, "Kode_Bahan_Baku", previousCode, code,
-                               {"Nama_Bahan_Baku", "Satuan", "Stok_Minimum", "Jenis_Bahan_Baku", "Harga_Acuan"},
-                               {name, unit, minimum, category, referencePrice}, transaction)
+                    If previousCode Is Nothing Then
+                        SaveRecord(Materials, "Kode_Bahan_Baku", Nothing, code,
+                                   {"Nama_Bahan_Baku", "Satuan", "Stok_Minimum", "Jenis_Bahan_Baku", "Harga_Acuan", "Status_Bahan_Baku"},
+                                   {name, unit, minimum, category, referencePrice, "Aktif"}, transaction)
+                    Else
+                        SaveRecord(Materials, "Kode_Bahan_Baku", previousCode, code,
+                                   {"Nama_Bahan_Baku", "Satuan", "Stok_Minimum", "Jenis_Bahan_Baku", "Harga_Acuan"},
+                                   {name, unit, minimum, category, referencePrice}, transaction)
+                    End If
                     Dim changed = ExecuteInTransaction(transaction,
                         "UPDATE Data_Persediaan SET Jumlah_Stok_Bahan_Baku = ?, Tanggal_Update_Stok = ? WHERE Kode_Bahan_Baku = ?",
                         quantity, DateTime.Today, code)
@@ -174,8 +246,14 @@ Namespace Shoelusi
                 Throw New ArgumentException("Pengadaan baru harus berstatus Menunggu. Pengadaan hanya dapat diterima setelah disetujui Pemilik.")
             End If
 
-            Dim material = ReadRows("SELECT Stok_Minimum, Harga_Acuan FROM Data_Bahan_Baku WHERE Kode_Bahan_Baku = ?", materialCode)
+            Dim material = ReadRows(
+                "SELECT Stok_Minimum, Harga_Acuan, Status_Bahan_Baku FROM Data_Bahan_Baku WHERE Kode_Bahan_Baku = ?",
+                materialCode)
             If material.Rows.Count = 0 Then Throw New ArgumentException("Kode bahan baku belum terdaftar.")
+            If Not String.Equals(Convert.ToString(material.Rows(0)("Status_Bahan_Baku")),
+                                 "Aktif", StringComparison.OrdinalIgnoreCase) Then
+                Throw New ArgumentException("Bahan baku berstatus Nonaktif dan tidak dapat digunakan untuk pengadaan baru.")
+            End If
 
             Dim price As Decimal
             Dim savedPrice = If(previousCode Is Nothing, Nothing,

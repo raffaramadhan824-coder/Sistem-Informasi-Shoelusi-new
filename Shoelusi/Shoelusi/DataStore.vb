@@ -17,7 +17,7 @@ Namespace Shoelusi
         Friend Const Jobs As String = "Data_Pengerjaan"
 
         Friend Const SelectMaterials As String =
-            "SELECT b.Kode_Bahan_Baku, b.Nama_Bahan_Baku, s.Jumlah_Stok_Bahan_Baku, b.Satuan, b.Stok_Minimum, b.Jenis_Bahan_Baku, b.Harga_Acuan " &
+            "SELECT b.Kode_Bahan_Baku, b.Nama_Bahan_Baku, s.Jumlah_Stok_Bahan_Baku, b.Satuan, b.Stok_Minimum, b.Jenis_Bahan_Baku, b.Harga_Acuan, IIf(b.Status_Bahan_Baku = 'Aktif', True, False) AS StatusAktif " &
             "FROM Data_Bahan_Baku AS b LEFT JOIN Data_Persediaan AS s ON b.Kode_Bahan_Baku = s.Kode_Bahan_Baku ORDER BY b.Kode_Bahan_Baku"
 
         Friend Const SelectPurchases As String =
