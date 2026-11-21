@@ -33,6 +33,10 @@ Partial Public Class FrmPemilik
             Me.btnHapusAkun = New System.Windows.Forms.Button()
             Me.btnBersihkanAkun = New System.Windows.Forms.Button()
             Me.dgvAkun = New System.Windows.Forms.DataGridView()
+            Me.dgvAkunCol1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+            Me.dgvAkunCol2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+            Me.dgvAkunCol4 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+            Me.dgvAkunCol5 = New System.Windows.Forms.DataGridViewTextBoxColumn()
             Me.tpPersetujuanBB = New System.Windows.Forms.TabPage()
             Me.lblTitlePersetujuanBB = New System.Windows.Forms.Label()
             Me.lblPetunjukPersetujuanBB = New System.Windows.Forms.Label()
@@ -82,10 +86,6 @@ Partial Public Class FrmPemilik
             Me.lblActor = New System.Windows.Forms.Label()
             Me.btnLogout = New System.Windows.Forms.Button()
             Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-            Me.dgvAkunCol1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-            Me.dgvAkunCol2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-            Me.dgvAkunCol4 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-            Me.dgvAkunCol5 = New System.Windows.Forms.DataGridViewTextBoxColumn()
             Me.tabMain.SuspendLayout()
             Me.tpAkun.SuspendLayout()
             Me.pnlAkun.SuspendLayout()
@@ -120,9 +120,9 @@ Partial Public Class FrmPemilik
             Me.tpAkun.Controls.Add(Me.lblTitleAkun)
             Me.tpAkun.Controls.Add(Me.pnlAkun)
             Me.tpAkun.Controls.Add(Me.dgvAkun)
-            Me.tpAkun.Location = New System.Drawing.Point(4, 33)
+            Me.tpAkun.Location = New System.Drawing.Point(4, 28)
             Me.tpAkun.Name = "tpAkun"
-            Me.tpAkun.Size = New System.Drawing.Size(1202, 553)
+            Me.tpAkun.Size = New System.Drawing.Size(1202, 558)
             Me.tpAkun.TabIndex = 0
             Me.tpAkun.Text = "Data Akun"
             '
@@ -175,7 +175,7 @@ Partial Public Class FrmPemilik
             Me.txtAkunID.Font = New System.Drawing.Font("Arial", 10.0!)
             Me.txtAkunID.Location = New System.Drawing.Point(15, 43)
             Me.txtAkunID.Name = "txtAkunID"
-            Me.txtAkunID.Size = New System.Drawing.Size(190, 30)
+            Me.txtAkunID.Size = New System.Drawing.Size(190, 27)
             Me.txtAkunID.TabIndex = 1
             '
             'lbltxtAkunNama
@@ -195,7 +195,7 @@ Partial Public Class FrmPemilik
             Me.txtAkunNama.Font = New System.Drawing.Font("Arial", 10.0!)
             Me.txtAkunNama.Location = New System.Drawing.Point(217, 43)
             Me.txtAkunNama.Name = "txtAkunNama"
-            Me.txtAkunNama.Size = New System.Drawing.Size(190, 30)
+            Me.txtAkunNama.Size = New System.Drawing.Size(190, 27)
             Me.txtAkunNama.TabIndex = 3
             '
             'lbltxtAkunRole
@@ -215,7 +215,7 @@ Partial Public Class FrmPemilik
             Me.txtAkunRole.Font = New System.Drawing.Font("Arial", 10.0!)
             Me.txtAkunRole.Location = New System.Drawing.Point(439, 43)
             Me.txtAkunRole.Name = "txtAkunRole"
-            Me.txtAkunRole.Size = New System.Drawing.Size(190, 30)
+            Me.txtAkunRole.Size = New System.Drawing.Size(190, 27)
             Me.txtAkunRole.TabIndex = 7
             '
             'lbltxtAkunStatus
@@ -235,7 +235,7 @@ Partial Public Class FrmPemilik
             Me.txtAkunStatus.Font = New System.Drawing.Font("Arial", 10.0!)
             Me.txtAkunStatus.Location = New System.Drawing.Point(667, 43)
             Me.txtAkunStatus.Name = "txtAkunStatus"
-            Me.txtAkunStatus.Size = New System.Drawing.Size(190, 30)
+            Me.txtAkunStatus.Size = New System.Drawing.Size(190, 27)
             Me.txtAkunStatus.TabIndex = 9
             '
             'btnTambahAkun
@@ -309,6 +309,38 @@ Partial Public Class FrmPemilik
             Me.dgvAkun.Size = New System.Drawing.Size(1150, 325)
             Me.dgvAkun.TabIndex = 2
             '
+            'dgvAkunCol1
+            '
+            Me.dgvAkunCol1.HeaderText = "No. ID"
+            Me.dgvAkunCol1.MinimumWidth = 6
+            Me.dgvAkunCol1.Name = "dgvAkunCol1"
+            Me.dgvAkunCol1.ReadOnly = True
+            Me.dgvAkunCol1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+            '
+            'dgvAkunCol2
+            '
+            Me.dgvAkunCol2.HeaderText = "Nama"
+            Me.dgvAkunCol2.MinimumWidth = 6
+            Me.dgvAkunCol2.Name = "dgvAkunCol2"
+            Me.dgvAkunCol2.ReadOnly = True
+            Me.dgvAkunCol2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+            '
+            'dgvAkunCol4
+            '
+            Me.dgvAkunCol4.HeaderText = "Divisi"
+            Me.dgvAkunCol4.MinimumWidth = 6
+            Me.dgvAkunCol4.Name = "dgvAkunCol4"
+            Me.dgvAkunCol4.ReadOnly = True
+            Me.dgvAkunCol4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+            '
+            'dgvAkunCol5
+            '
+            Me.dgvAkunCol5.HeaderText = "Kata Sandi"
+            Me.dgvAkunCol5.MinimumWidth = 6
+            Me.dgvAkunCol5.Name = "dgvAkunCol5"
+            Me.dgvAkunCol5.ReadOnly = True
+            Me.dgvAkunCol5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+            '
             'tpPersetujuanBB
             '
             Me.tpPersetujuanBB.BackColor = System.Drawing.Color.CadetBlue
@@ -317,9 +349,9 @@ Partial Public Class FrmPemilik
             Me.tpPersetujuanBB.Controls.Add(Me.dgvPersetujuanBB)
             Me.tpPersetujuanBB.Controls.Add(Me.btnSetujuiPersetujuanBB)
             Me.tpPersetujuanBB.Controls.Add(Me.btnTolakPersetujuanBB)
-            Me.tpPersetujuanBB.Location = New System.Drawing.Point(4, 33)
+            Me.tpPersetujuanBB.Location = New System.Drawing.Point(4, 28)
             Me.tpPersetujuanBB.Name = "tpPersetujuanBB"
-            Me.tpPersetujuanBB.Size = New System.Drawing.Size(1202, 553)
+            Me.tpPersetujuanBB.Size = New System.Drawing.Size(1202, 558)
             Me.tpPersetujuanBB.TabIndex = 1
             Me.tpPersetujuanBB.Text = "Persetujuan Pengadaan"
             '
@@ -438,9 +470,9 @@ Partial Public Class FrmPemilik
             Me.tpDataLayanan.Controls.Add(Me.lblTitleDataLayanan)
             Me.tpDataLayanan.Controls.Add(Me.pnlDataLayanan)
             Me.tpDataLayanan.Controls.Add(Me.dgvDataLayanan)
-            Me.tpDataLayanan.Location = New System.Drawing.Point(4, 33)
+            Me.tpDataLayanan.Location = New System.Drawing.Point(4, 28)
             Me.tpDataLayanan.Name = "tpDataLayanan"
-            Me.tpDataLayanan.Size = New System.Drawing.Size(1202, 553)
+            Me.tpDataLayanan.Size = New System.Drawing.Size(1202, 558)
             Me.tpDataLayanan.TabIndex = 2
             Me.tpDataLayanan.Text = "Data Layanan"
             '
@@ -495,7 +527,7 @@ Partial Public Class FrmPemilik
             Me.txtLayananKode.Font = New System.Drawing.Font("Arial", 10.0!)
             Me.txtLayananKode.Location = New System.Drawing.Point(15, 43)
             Me.txtLayananKode.Name = "txtLayananKode"
-            Me.txtLayananKode.Size = New System.Drawing.Size(190, 30)
+            Me.txtLayananKode.Size = New System.Drawing.Size(190, 27)
             Me.txtLayananKode.TabIndex = 1
             '
             'lbltxtLayananNama
@@ -515,7 +547,7 @@ Partial Public Class FrmPemilik
             Me.txtLayananNama.Font = New System.Drawing.Font("Arial", 10.0!)
             Me.txtLayananNama.Location = New System.Drawing.Point(217, 43)
             Me.txtLayananNama.Name = "txtLayananNama"
-            Me.txtLayananNama.Size = New System.Drawing.Size(190, 30)
+            Me.txtLayananNama.Size = New System.Drawing.Size(190, 27)
             Me.txtLayananNama.TabIndex = 3
             '
             'lbltxtLayananDeskripsi
@@ -535,7 +567,7 @@ Partial Public Class FrmPemilik
             Me.txtLayananDeskripsi.Font = New System.Drawing.Font("Arial", 10.0!)
             Me.txtLayananDeskripsi.Location = New System.Drawing.Point(419, 43)
             Me.txtLayananDeskripsi.Name = "txtLayananDeskripsi"
-            Me.txtLayananDeskripsi.Size = New System.Drawing.Size(190, 30)
+            Me.txtLayananDeskripsi.Size = New System.Drawing.Size(190, 27)
             Me.txtLayananDeskripsi.TabIndex = 5
             '
             'lbltxtLayananHarga
@@ -555,7 +587,7 @@ Partial Public Class FrmPemilik
             Me.txtLayananHarga.Font = New System.Drawing.Font("Arial", 10.0!)
             Me.txtLayananHarga.Location = New System.Drawing.Point(621, 43)
             Me.txtLayananHarga.Name = "txtLayananHarga"
-            Me.txtLayananHarga.Size = New System.Drawing.Size(190, 30)
+            Me.txtLayananHarga.Size = New System.Drawing.Size(190, 27)
             Me.txtLayananHarga.TabIndex = 7
             '
             'lbltxtLayananEstimasi
@@ -575,7 +607,7 @@ Partial Public Class FrmPemilik
             Me.txtLayananEstimasi.Font = New System.Drawing.Font("Arial", 10.0!)
             Me.txtLayananEstimasi.Location = New System.Drawing.Point(823, 43)
             Me.txtLayananEstimasi.Name = "txtLayananEstimasi"
-            Me.txtLayananEstimasi.Size = New System.Drawing.Size(190, 30)
+            Me.txtLayananEstimasi.Size = New System.Drawing.Size(190, 27)
             Me.txtLayananEstimasi.TabIndex = 9
             '
             'btnTambahDataLayanan
@@ -696,9 +728,9 @@ Partial Public Class FrmPemilik
             Me.tpCekPenjualan.Controls.Add(Me.txtCariCekPenjualan)
             Me.tpCekPenjualan.Controls.Add(Me.lblCariCekPenjualan)
             Me.tpCekPenjualan.Controls.Add(Me.dgvCekPenjualan)
-            Me.tpCekPenjualan.Location = New System.Drawing.Point(4, 33)
+            Me.tpCekPenjualan.Location = New System.Drawing.Point(4, 28)
             Me.tpCekPenjualan.Name = "tpCekPenjualan"
-            Me.tpCekPenjualan.Size = New System.Drawing.Size(1202, 553)
+            Me.tpCekPenjualan.Size = New System.Drawing.Size(1202, 558)
             Me.tpCekPenjualan.TabIndex = 3
             Me.tpCekPenjualan.Text = "Cek Penjualan"
             '
@@ -719,7 +751,7 @@ Partial Public Class FrmPemilik
             Me.txtCariCekPenjualan.Font = New System.Drawing.Font("Arial", 10.0!)
             Me.txtCariCekPenjualan.Location = New System.Drawing.Point(22, 62)
             Me.txtCariCekPenjualan.Name = "txtCariCekPenjualan"
-            Me.txtCariCekPenjualan.Size = New System.Drawing.Size(285, 30)
+            Me.txtCariCekPenjualan.Size = New System.Drawing.Size(285, 27)
             Me.txtCariCekPenjualan.TabIndex = 1
             '
             'lblCariCekPenjualan
@@ -733,7 +765,6 @@ Partial Public Class FrmPemilik
             Me.lblCariCekPenjualan.TabIndex = 2
             Me.lblCariCekPenjualan.Text = "Cari data..."
             Me.lblCariCekPenjualan.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-            '
             '
             'dgvCekPenjualan
             '
@@ -853,41 +884,9 @@ Partial Public Class FrmPemilik
             Me.PictureBox1.TabIndex = 8
             Me.PictureBox1.TabStop = False
             '
-            'dgvAkunCol1
-            '
-            Me.dgvAkunCol1.HeaderText = "No. ID"
-            Me.dgvAkunCol1.MinimumWidth = 6
-            Me.dgvAkunCol1.Name = "dgvAkunCol1"
-            Me.dgvAkunCol1.ReadOnly = True
-            Me.dgvAkunCol1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-            '
-            'dgvAkunCol2
-            '
-            Me.dgvAkunCol2.HeaderText = "Nama"
-            Me.dgvAkunCol2.MinimumWidth = 6
-            Me.dgvAkunCol2.Name = "dgvAkunCol2"
-            Me.dgvAkunCol2.ReadOnly = True
-            Me.dgvAkunCol2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-            '
-            'dgvAkunCol4
-            '
-            Me.dgvAkunCol4.HeaderText = "Divisi"
-            Me.dgvAkunCol4.MinimumWidth = 6
-            Me.dgvAkunCol4.Name = "dgvAkunCol4"
-            Me.dgvAkunCol4.ReadOnly = True
-            Me.dgvAkunCol4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-            '
-            'dgvAkunCol5
-            '
-            Me.dgvAkunCol5.HeaderText = "Kata Sandi"
-            Me.dgvAkunCol5.MinimumWidth = 6
-            Me.dgvAkunCol5.Name = "dgvAkunCol5"
-            Me.dgvAkunCol5.ReadOnly = True
-            Me.dgvAkunCol5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-            '
             'FrmPemilik
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(10.0!, 21.0!)
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 17.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.BackColor = System.Drawing.Color.CadetBlue
             Me.ClientSize = New System.Drawing.Size(1250, 710)

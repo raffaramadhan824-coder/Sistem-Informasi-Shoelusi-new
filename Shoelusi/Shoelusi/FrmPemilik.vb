@@ -154,15 +154,69 @@ Namespace Shoelusi
 
         Private Sub SetStatusPengadaan(status As String)
             Dim row = ActualSelection(dgvPersetujuanBB)
-            If row Is Nothing Then Return
+
+            If row Is Nothing Then
+                MessageBox.Show("Pilih pengadaan yang ingin diputuskan.", "Persetujuan Pengadaan")
+                Return
+            End If
+
+            Dim purchaseCode = Convert.ToString(row.Tag)
+            Dim currentStatus = Convert.ToString(row.Cells(4).Value).Trim()
+            Dim newStatus = status.Trim()
+
+            If Not String.Equals(newStatus, "Disetujui", StringComparison.OrdinalIgnoreCase) AndAlso
+       Not String.Equals(newStatus, "Ditolak", StringComparison.OrdinalIgnoreCase) Then
+                MessageBox.Show("Status tujuan tidak valid.", "Persetujuan Pengadaan")
+                Return
+            End If
+
+            If String.Equals(currentStatus, "Diterima", StringComparison.OrdinalIgnoreCase) Then
+                MessageBox.Show("Pengadaan yang sudah diterima tidak dapat diubah keputusannya.", "Persetujuan Pengadaan")
+                Return
+            End If
+
+            If Not String.Equals(currentStatus, "Menunggu", StringComparison.OrdinalIgnoreCase) AndAlso
+       Not String.Equals(currentStatus, "Disetujui", StringComparison.OrdinalIgnoreCase) AndAlso
+       Not String.Equals(currentStatus, "Ditolak", StringComparison.OrdinalIgnoreCase) Then
+                MessageBox.Show("Status pengadaan tidak dikenali.", "Persetujuan Pengadaan")
+                Return
+            End If
+
+            If String.Equals(currentStatus, newStatus, StringComparison.OrdinalIgnoreCase) Then
+                MessageBox.Show("Pengadaan sudah berstatus " & newStatus & ".", "Persetujuan Pengadaan")
+                Return
+            End If
+
+            Dim confirmation = MessageBox.Show(
+        "Apakah Anda yakin ingin mengubah status pengadaan " & purchaseCode &
+        " dari " & currentStatus & " menjadi " & newStatus & "?",
+        "Konfirmasi Perubahan Status",
+        MessageBoxButtons.YesNo,
+        MessageBoxIcon.Question)
+
+            If confirmation <> DialogResult.Yes Then Return
+
             Try
-                Dim changed = ExecuteChange("UPDATE Data_Pengadaan_Bahan_Baku SET Status_Pengadaan = ? WHERE Kode_Pengadaan = ? AND Status_Pengadaan = ?",
-                                            status, CStr(row.Tag), "Menunggu")
-                If changed = 0 Then MessageBox.Show("Hanya pengadaan berstatus Menunggu yang bisa diputuskan.", "Persetujuan Pengadaan")
+                Dim changed = ExecuteChange(
+            "UPDATE Data_Pengadaan_Bahan_Baku SET Status_Pengadaan = ? " &
+            "WHERE Kode_Pengadaan = ? AND Status_Pengadaan IN (?, ?, ?)",
+            newStatus, purchaseCode, "Menunggu", "Disetujui", "Ditolak")
+
+                If changed <> 1 Then
+                    MessageBox.Show("Status tidak berhasil diubah. Periksa kembali data pengadaan.", "Persetujuan Pengadaan")
+                Else
+                    MessageBox.Show("Status pengadaan berhasil diubah menjadi " & newStatus & ".", "Persetujuan Pengadaan")
+                End If
+
                 LoadGrid(dgvPersetujuanBB, SelectApprovals)
+
             Catch ex As Exception
                 MessageBox.Show("Gagal memperbarui pengadaan. " & ex.Message, "Persetujuan Pengadaan")
             End Try
+        End Sub
+
+        Private Sub FrmPemilik_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
         End Sub
     End Class
 End Namespace
