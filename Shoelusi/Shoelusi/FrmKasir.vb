@@ -15,6 +15,7 @@ Namespace Shoelusi
             dgvPesanan.Columns.Add("NamaLayanan", "Nama Layanan")
             dgvPenjualan.Columns.Add("JumlahSepatu", "Jumlah Sepatu")
             dgvPenjualan.Columns.Add("TarifLayanan", "Tarif per Pasang (Rp)")
+            dgvPenjualan.Columns.Add("StatusPenjualan", "Status Penjualan")
             For Each input In {txtPenjualanKode, txtPenjualanPesanan, txtPenjualanJumlah}
                 AddHandler input.TextChanged, Sub(sender, e) PreviewSale()
             Next
@@ -33,7 +34,7 @@ Namespace Shoelusi
         Private Sub BindPageActions()
             BindCrud(dgvPenjualan, New Control() {txtPenjualanKode, txtPenjualanPesanan, dtpPenjualanTanggal, txtPenjualanTotal, txtPenjualanMetode, txtPenjualanJumlah},
                      btnTambahPenjualan, btnUbahPenjualan, btnHapusPenjualan, btnBersihkanPenjualan, "Penjualan",
-                     AddressOf ReloadData, AddressOf SaveSale, Sub(code) DeleteRecord(Sales, "Kode_Penjualan", code), AddressOf PreviewSale)
+                     AddressOf ReloadData, AddressOf SaveSale, AddressOf DeleteSale, AddressOf PreviewSale)
             BindCrud(dgvPesanan, New Control() {txtPesananNo, txtPesananPelanggan, txtPesananLayanan, dtpPesananTanggal, txtPesananStatus},
                      btnTambahPesanan, btnUbahPesanan, btnHapusPesanan, btnBersihkanPesanan, "Pesanan",
                      AddressOf ReloadData, AddressOf SaveOrder, Sub(code) DeleteRecord(Orders, "Kode_Pesanan", code))
@@ -83,6 +84,25 @@ Namespace Shoelusi
             If Not Integer.TryParse(fields(5), NumberStyles.None, CultureInfo.InvariantCulture, quantity) OrElse quantity < 1 Then
                 Throw New ArgumentException("Isi jumlah sepatu dengan bilangan bulat positif.")
             End If
+            If previousCode IsNot Nothing Then
+                Dim currentSale = ReadRows(
+                    "SELECT Status_Penjualan FROM Data_Penjualan WHERE Kode_Penjualan = ?",
+                    previousCode)
+
+                If currentSale.Rows.Count <> 1 Then
+                    Throw New InvalidOperationException("Data penjualan sudah tidak tersedia.")
+                End If
+
+                Dim currentStatus = If(currentSale.Rows(0).IsNull("Status_Penjualan"),
+                                       "Menunggu",
+                                       Convert.ToString(currentSale.Rows(0)("Status_Penjualan")).Trim())
+
+                If currentStatus <> "" AndAlso
+                   Not String.Equals(currentStatus, "Menunggu", StringComparison.OrdinalIgnoreCase) Then
+                    Throw New ArgumentException("Penjualan yang sudah diputuskan Owner tidak dapat diubah oleh kasir.")
+                End If
+            End If
+
             Dim rate As Decimal
             Dim snapshot = If(previousCode Is Nothing, Nothing, ReadRows(
                 "SELECT Harga_Layanan_Transaksi FROM Data_Penjualan WHERE Kode_Penjualan = ? AND Kode_Pemesanan = ?", code, orderCode))
@@ -99,12 +119,36 @@ Namespace Shoelusi
             Dim columns As String() = {"Kode_Pemesanan", "Tanggal_Pengambilan", "Total_Biaya", "Status_Pembayaran", "Jumlah_Sepatu", "Harga_Layanan_Transaksi"}
             Dim values As Object() = {orderCode, pickup, total, paymentStatus, quantity.ToString(CultureInfo.InvariantCulture), rate}
             If previousCode Is Nothing Then
-                Array.Resize(columns, columns.Length + 1)
-                Array.Resize(values, values.Length + 1)
-                columns(columns.Length - 1) = "No_ID"
-                values(values.Length - 1) = activeAccountId
+                Array.Resize(columns, columns.Length + 2)
+                Array.Resize(values, values.Length + 2)
+                columns(columns.Length - 2) = "No_ID"
+                columns(columns.Length - 1) = "Status_Penjualan"
+                values(values.Length - 2) = activeAccountId
+                values(values.Length - 1) = "Menunggu"
             End If
+
             SaveRecord(Sales, "Kode_Penjualan", previousCode, code, columns, values)
+        End Sub
+
+        Private Sub DeleteSale(code As String)
+            Dim sale = ReadRows(
+                "SELECT Status_Penjualan FROM Data_Penjualan WHERE Kode_Penjualan = ?",
+                code)
+
+            If sale.Rows.Count <> 1 Then
+                Throw New InvalidOperationException("Data penjualan sudah tidak tersedia.")
+            End If
+
+            Dim status = If(sale.Rows(0).IsNull("Status_Penjualan"),
+                            "Menunggu",
+                            Convert.ToString(sale.Rows(0)("Status_Penjualan")).Trim())
+
+            If status <> "" AndAlso
+               Not String.Equals(status, "Menunggu", StringComparison.OrdinalIgnoreCase) Then
+                Throw New ArgumentException("Penjualan yang sudah diputuskan Owner tidak dapat dihapus oleh kasir.")
+            End If
+
+            DeleteRecord(Sales, "Kode_Penjualan", code)
         End Sub
 
         Private Sub SaveOrder(previousCode As String, fields As String())

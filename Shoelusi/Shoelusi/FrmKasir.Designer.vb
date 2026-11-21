@@ -22,6 +22,7 @@ Partial Public Class FrmKasir
             Me.pnlPenjualan = New System.Windows.Forms.Panel()
             Me.lbltxtPenjualanKode = New System.Windows.Forms.Label()
             Me.txtPenjualanKode = New System.Windows.Forms.TextBox()
+            Me.lbltxtPenjualanPesanan = New System.Windows.Forms.Label()
             Me.txtPenjualanPesanan = New System.Windows.Forms.TextBox()
             Me.lbltxtPenjualanTanggal = New System.Windows.Forms.Label()
             Me.dtpPenjualanTanggal = New System.Windows.Forms.DateTimePicker()
@@ -35,7 +36,6 @@ Partial Public Class FrmKasir
             Me.btnUbahPenjualan = New System.Windows.Forms.Button()
             Me.btnHapusPenjualan = New System.Windows.Forms.Button()
             Me.btnBersihkanPenjualan = New System.Windows.Forms.Button()
-            Me.lbltxtPenjualanPesanan = New System.Windows.Forms.Label()
             Me.dgvPenjualan = New System.Windows.Forms.DataGridView()
             Me.dgvPenjualanCol1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
             Me.dgvPenjualanCol2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -126,9 +126,9 @@ Partial Public Class FrmKasir
             Me.tpPenjualan.Controls.Add(Me.lblTitlePenjualan)
             Me.tpPenjualan.Controls.Add(Me.pnlPenjualan)
             Me.tpPenjualan.Controls.Add(Me.dgvPenjualan)
-            Me.tpPenjualan.Location = New System.Drawing.Point(4, 33)
+            Me.tpPenjualan.Location = New System.Drawing.Point(4, 28)
             Me.tpPenjualan.Name = "tpPenjualan"
-            Me.tpPenjualan.Size = New System.Drawing.Size(1202, 553)
+            Me.tpPenjualan.Size = New System.Drawing.Size(1202, 558)
             Me.tpPenjualan.TabIndex = 0
             Me.tpPenjualan.Text = "Penjualan"
             '
@@ -185,15 +185,27 @@ Partial Public Class FrmKasir
             Me.txtPenjualanKode.Font = New System.Drawing.Font("Arial", 10.0!)
             Me.txtPenjualanKode.Location = New System.Drawing.Point(15, 43)
             Me.txtPenjualanKode.Name = "txtPenjualanKode"
-            Me.txtPenjualanKode.Size = New System.Drawing.Size(190, 30)
+            Me.txtPenjualanKode.Size = New System.Drawing.Size(190, 27)
             Me.txtPenjualanKode.TabIndex = 1
+            '
+            'lbltxtPenjualanPesanan
+            '
+            Me.lbltxtPenjualanPesanan.BackColor = System.Drawing.Color.Transparent
+            Me.lbltxtPenjualanPesanan.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.lbltxtPenjualanPesanan.ForeColor = System.Drawing.Color.White
+            Me.lbltxtPenjualanPesanan.Location = New System.Drawing.Point(217, 16)
+            Me.lbltxtPenjualanPesanan.Name = "lbltxtPenjualanPesanan"
+            Me.lbltxtPenjualanPesanan.Size = New System.Drawing.Size(190, 23)
+            Me.lbltxtPenjualanPesanan.TabIndex = 2
+            Me.lbltxtPenjualanPesanan.Text = "Kode Pesanan"
+            Me.lbltxtPenjualanPesanan.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'txtPenjualanPesanan
             '
             Me.txtPenjualanPesanan.Font = New System.Drawing.Font("Arial", 10.0!)
             Me.txtPenjualanPesanan.Location = New System.Drawing.Point(217, 43)
             Me.txtPenjualanPesanan.Name = "txtPenjualanPesanan"
-            Me.txtPenjualanPesanan.Size = New System.Drawing.Size(190, 30)
+            Me.txtPenjualanPesanan.Size = New System.Drawing.Size(190, 27)
             Me.txtPenjualanPesanan.TabIndex = 3
             '
             'lbltxtPenjualanTanggal
@@ -210,12 +222,12 @@ Partial Public Class FrmKasir
             '
             'dtpPenjualanTanggal
             '
+            Me.dtpPenjualanTanggal.CustomFormat = "dd/MM/yyyy"
             Me.dtpPenjualanTanggal.Font = New System.Drawing.Font("Arial", 10.0!)
+            Me.dtpPenjualanTanggal.Format = System.Windows.Forms.DateTimePickerFormat.Custom
             Me.dtpPenjualanTanggal.Location = New System.Drawing.Point(419, 43)
             Me.dtpPenjualanTanggal.Name = "dtpPenjualanTanggal"
-            Me.dtpPenjualanTanggal.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-            Me.dtpPenjualanTanggal.CustomFormat = "dd/MM/yyyy"
-            Me.dtpPenjualanTanggal.Size = New System.Drawing.Size(190, 30)
+            Me.dtpPenjualanTanggal.Size = New System.Drawing.Size(190, 27)
             Me.dtpPenjualanTanggal.TabIndex = 5
             '
             'lbltxtPenjualanTotal
@@ -235,8 +247,8 @@ Partial Public Class FrmKasir
             Me.txtPenjualanTotal.Font = New System.Drawing.Font("Arial", 10.0!)
             Me.txtPenjualanTotal.Location = New System.Drawing.Point(621, 43)
             Me.txtPenjualanTotal.Name = "txtPenjualanTotal"
-            Me.txtPenjualanTotal.Size = New System.Drawing.Size(190, 30)
             Me.txtPenjualanTotal.ReadOnly = True
+            Me.txtPenjualanTotal.Size = New System.Drawing.Size(190, 27)
             Me.txtPenjualanTotal.TabIndex = 7
             '
             'lbltxtPenjualanMetode
@@ -251,14 +263,6 @@ Partial Public Class FrmKasir
             Me.lbltxtPenjualanMetode.Text = "Status Pembayaran"
             Me.lbltxtPenjualanMetode.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
-            'txtPenjualanMetode
-            '
-            Me.txtPenjualanMetode.Font = New System.Drawing.Font("Arial", 10.0!)
-            Me.txtPenjualanMetode.Location = New System.Drawing.Point(823, 43)
-            Me.txtPenjualanMetode.Name = "txtPenjualanMetode"
-            Me.txtPenjualanMetode.Size = New System.Drawing.Size(190, 30)
-            Me.txtPenjualanMetode.TabIndex = 9
-            '
             'lbltxtPenjualanJumlah
             '
             Me.lbltxtPenjualanJumlah.BackColor = System.Drawing.Color.Transparent
@@ -271,12 +275,20 @@ Partial Public Class FrmKasir
             Me.lbltxtPenjualanJumlah.Text = "Jumlah Sepatu"
             Me.lbltxtPenjualanJumlah.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
+            'txtPenjualanMetode
+            '
+            Me.txtPenjualanMetode.Font = New System.Drawing.Font("Arial", 10.0!)
+            Me.txtPenjualanMetode.Location = New System.Drawing.Point(823, 43)
+            Me.txtPenjualanMetode.Name = "txtPenjualanMetode"
+            Me.txtPenjualanMetode.Size = New System.Drawing.Size(190, 27)
+            Me.txtPenjualanMetode.TabIndex = 9
+            '
             'txtPenjualanJumlah
             '
             Me.txtPenjualanJumlah.Font = New System.Drawing.Font("Arial", 10.0!)
             Me.txtPenjualanJumlah.Location = New System.Drawing.Point(1018, 43)
             Me.txtPenjualanJumlah.Name = "txtPenjualanJumlah"
-            Me.txtPenjualanJumlah.Size = New System.Drawing.Size(119, 30)
+            Me.txtPenjualanJumlah.Size = New System.Drawing.Size(119, 27)
             Me.txtPenjualanJumlah.TabIndex = 21
             '
             'btnTambahPenjualan
@@ -330,18 +342,6 @@ Partial Public Class FrmKasir
             Me.btnBersihkanPenjualan.TabIndex = 13
             Me.btnBersihkanPenjualan.Text = "Bersihkan"
             Me.btnBersihkanPenjualan.UseVisualStyleBackColor = False
-            '
-            'lbltxtPenjualanPesanan
-            '
-            Me.lbltxtPenjualanPesanan.BackColor = System.Drawing.Color.Transparent
-            Me.lbltxtPenjualanPesanan.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-            Me.lbltxtPenjualanPesanan.ForeColor = System.Drawing.Color.White
-            Me.lbltxtPenjualanPesanan.Location = New System.Drawing.Point(217, 16)
-            Me.lbltxtPenjualanPesanan.Name = "lbltxtPenjualanPesanan"
-            Me.lbltxtPenjualanPesanan.Size = New System.Drawing.Size(190, 23)
-            Me.lbltxtPenjualanPesanan.TabIndex = 2
-            Me.lbltxtPenjualanPesanan.Text = "Kode Pesanan"
-            Me.lbltxtPenjualanPesanan.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'dgvPenjualan
             '
@@ -408,9 +408,9 @@ Partial Public Class FrmKasir
             Me.tpPesanan.Controls.Add(Me.lblTitlePesanan)
             Me.tpPesanan.Controls.Add(Me.pnlPesanan)
             Me.tpPesanan.Controls.Add(Me.dgvPesanan)
-            Me.tpPesanan.Location = New System.Drawing.Point(4, 33)
+            Me.tpPesanan.Location = New System.Drawing.Point(4, 28)
             Me.tpPesanan.Name = "tpPesanan"
-            Me.tpPesanan.Size = New System.Drawing.Size(1202, 553)
+            Me.tpPesanan.Size = New System.Drawing.Size(1202, 558)
             Me.tpPesanan.TabIndex = 1
             Me.tpPesanan.Text = "Pesanan"
             '
@@ -465,7 +465,7 @@ Partial Public Class FrmKasir
             Me.txtPesananNo.Font = New System.Drawing.Font("Arial", 10.0!)
             Me.txtPesananNo.Location = New System.Drawing.Point(15, 43)
             Me.txtPesananNo.Name = "txtPesananNo"
-            Me.txtPesananNo.Size = New System.Drawing.Size(190, 30)
+            Me.txtPesananNo.Size = New System.Drawing.Size(190, 27)
             Me.txtPesananNo.TabIndex = 1
             '
             'lbltxtPesananPelanggan
@@ -485,7 +485,7 @@ Partial Public Class FrmKasir
             Me.txtPesananPelanggan.Font = New System.Drawing.Font("Arial", 10.0!)
             Me.txtPesananPelanggan.Location = New System.Drawing.Point(217, 43)
             Me.txtPesananPelanggan.Name = "txtPesananPelanggan"
-            Me.txtPesananPelanggan.Size = New System.Drawing.Size(190, 30)
+            Me.txtPesananPelanggan.Size = New System.Drawing.Size(190, 27)
             Me.txtPesananPelanggan.TabIndex = 3
             '
             'lbltxtPesananLayanan
@@ -505,7 +505,7 @@ Partial Public Class FrmKasir
             Me.txtPesananLayanan.Font = New System.Drawing.Font("Arial", 10.0!)
             Me.txtPesananLayanan.Location = New System.Drawing.Point(419, 43)
             Me.txtPesananLayanan.Name = "txtPesananLayanan"
-            Me.txtPesananLayanan.Size = New System.Drawing.Size(190, 30)
+            Me.txtPesananLayanan.Size = New System.Drawing.Size(190, 27)
             Me.txtPesananLayanan.TabIndex = 5
             '
             'lbltxtPesananTanggal
@@ -522,12 +522,12 @@ Partial Public Class FrmKasir
             '
             'dtpPesananTanggal
             '
+            Me.dtpPesananTanggal.CustomFormat = "dd/MM/yyyy"
             Me.dtpPesananTanggal.Font = New System.Drawing.Font("Arial", 10.0!)
+            Me.dtpPesananTanggal.Format = System.Windows.Forms.DateTimePickerFormat.Custom
             Me.dtpPesananTanggal.Location = New System.Drawing.Point(621, 43)
             Me.dtpPesananTanggal.Name = "dtpPesananTanggal"
-            Me.dtpPesananTanggal.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-            Me.dtpPesananTanggal.CustomFormat = "dd/MM/yyyy"
-            Me.dtpPesananTanggal.Size = New System.Drawing.Size(190, 30)
+            Me.dtpPesananTanggal.Size = New System.Drawing.Size(190, 27)
             Me.dtpPesananTanggal.TabIndex = 7
             '
             'lbltxtPesananStatus
@@ -547,7 +547,7 @@ Partial Public Class FrmKasir
             Me.txtPesananStatus.Font = New System.Drawing.Font("Arial", 10.0!)
             Me.txtPesananStatus.Location = New System.Drawing.Point(823, 43)
             Me.txtPesananStatus.Name = "txtPesananStatus"
-            Me.txtPesananStatus.Size = New System.Drawing.Size(190, 30)
+            Me.txtPesananStatus.Size = New System.Drawing.Size(190, 27)
             Me.txtPesananStatus.TabIndex = 9
             '
             'btnTambahPesanan
@@ -669,9 +669,9 @@ Partial Public Class FrmKasir
             Me.tpCekLayanan.Controls.Add(Me.lblCariCekLayanan)
             Me.tpCekLayanan.Controls.Add(Me.dgvCekLayanan)
             Me.tpCekLayanan.ForeColor = System.Drawing.Color.CadetBlue
-            Me.tpCekLayanan.Location = New System.Drawing.Point(4, 33)
+            Me.tpCekLayanan.Location = New System.Drawing.Point(4, 28)
             Me.tpCekLayanan.Name = "tpCekLayanan"
-            Me.tpCekLayanan.Size = New System.Drawing.Size(1202, 553)
+            Me.tpCekLayanan.Size = New System.Drawing.Size(1202, 558)
             Me.tpCekLayanan.TabIndex = 2
             Me.tpCekLayanan.Text = "Cek Layanan"
             '
@@ -692,7 +692,7 @@ Partial Public Class FrmKasir
             Me.txtCariCekLayanan.Font = New System.Drawing.Font("Arial", 10.0!)
             Me.txtCariCekLayanan.Location = New System.Drawing.Point(22, 62)
             Me.txtCariCekLayanan.Name = "txtCariCekLayanan"
-            Me.txtCariCekLayanan.Size = New System.Drawing.Size(285, 30)
+            Me.txtCariCekLayanan.Size = New System.Drawing.Size(285, 27)
             Me.txtCariCekLayanan.TabIndex = 1
             '
             'lblCariCekLayanan
@@ -706,7 +706,6 @@ Partial Public Class FrmKasir
             Me.lblCariCekLayanan.TabIndex = 2
             Me.lblCariCekLayanan.Text = "Cari data..."
             Me.lblCariCekLayanan.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-            '
             '
             'dgvCekLayanan
             '
@@ -775,9 +774,9 @@ Partial Public Class FrmKasir
             Me.tpCekPengerjaan.Controls.Add(Me.lblCariCekPengerjaan)
             Me.tpCekPengerjaan.Controls.Add(Me.dgvCekPengerjaan)
             Me.tpCekPengerjaan.ForeColor = System.Drawing.Color.CadetBlue
-            Me.tpCekPengerjaan.Location = New System.Drawing.Point(4, 33)
+            Me.tpCekPengerjaan.Location = New System.Drawing.Point(4, 28)
             Me.tpCekPengerjaan.Name = "tpCekPengerjaan"
-            Me.tpCekPengerjaan.Size = New System.Drawing.Size(1202, 553)
+            Me.tpCekPengerjaan.Size = New System.Drawing.Size(1202, 558)
             Me.tpCekPengerjaan.TabIndex = 3
             Me.tpCekPengerjaan.Text = "Cek Pengerjaan"
             '
@@ -798,7 +797,7 @@ Partial Public Class FrmKasir
             Me.txtCariCekPengerjaan.Font = New System.Drawing.Font("Arial", 10.0!)
             Me.txtCariCekPengerjaan.Location = New System.Drawing.Point(22, 62)
             Me.txtCariCekPengerjaan.Name = "txtCariCekPengerjaan"
-            Me.txtCariCekPengerjaan.Size = New System.Drawing.Size(285, 30)
+            Me.txtCariCekPengerjaan.Size = New System.Drawing.Size(285, 27)
             Me.txtCariCekPengerjaan.TabIndex = 1
             '
             'lblCariCekPengerjaan
@@ -812,7 +811,6 @@ Partial Public Class FrmKasir
             Me.lblCariCekPengerjaan.TabIndex = 2
             Me.lblCariCekPengerjaan.Text = "Cari data..."
             Me.lblCariCekPengerjaan.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-            '
             '
             'dgvCekPengerjaan
             '
@@ -942,7 +940,7 @@ Partial Public Class FrmKasir
             '
             'FrmKasir
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(10.0!, 21.0!)
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 17.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.BackColor = System.Drawing.Color.CadetBlue
             Me.ClientSize = New System.Drawing.Size(1250, 710)

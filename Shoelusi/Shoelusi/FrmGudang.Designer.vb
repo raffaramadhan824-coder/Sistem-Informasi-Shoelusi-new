@@ -2,9 +2,9 @@
 
 Namespace Shoelusi
 
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Public Class FrmGudang
-    Inherits System.Windows.Forms.Form
+    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+    Partial Public Class FrmGudang
+        Inherits System.Windows.Forms.Form
 
     <System.Diagnostics.DebuggerNonUserCode()> _
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
