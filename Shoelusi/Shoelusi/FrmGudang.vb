@@ -11,6 +11,7 @@ Namespace Shoelusi
         Private storedSafetyStock As Double?
         Private storedDemand As String
         Private storedLeadTime As String
+        Private ReadOnly ropErrorProvider As New ErrorProvider()
 
         Public Sub New()
             InitializeComponent()
@@ -23,12 +24,25 @@ Namespace Shoelusi
             AddHandler txtPengadaanJumlah.TextChanged, Sub(sender, e) PreviewPurchase()
             AddHandler txtPengadaanNo.TextChanged, Sub(sender, e) PreviewPurchase()
             dgvCekPenggunaanBB.Columns.Add("KodePenggunaan", "Kode Penggunaan")
+            dgvCekPenggunaanBB.Columns("KodePenggunaan").Visible = False
+            dgvCekPenggunaanBB.DefaultCellStyle.ForeColor = System.Drawing.Color.Black
+            dgvCekPenggunaanBB.DefaultCellStyle.BackColor = System.Drawing.Color.White
+            dgvCekPenggunaanBB.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.White
+            dgvCekPenggunaanBB.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.SteelBlue
+            dgvCekPenggunaanBB.EnableHeadersVisualStyles = False
+            ropErrorProvider.ContainerControl = Me
+            ropErrorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink
             BindPageActions()
             BindSearch(dgvPersediaanBB)
             BindSearch(dgvPengadaanBB)
             BindSearch(dgvHitungEOQ)
             BindSearch(dgvHitungROP)
             AddHandler btnLogout.Click, Sub(sender, e) Close()
+            AddHandler tabMain.SelectedIndexChanged,
+                Sub(sender, e)
+                    If tabMain.SelectedTab Is tpCekPenggunaanBB Then ReloadUsageGrid()
+                End Sub
+            AddHandler FormClosed, Sub(sender, e) ropErrorProvider.Dispose()
             AddHandler Load, Sub(sender, e) ReloadData()
         End Sub
 
@@ -72,10 +86,15 @@ Namespace Shoelusi
             txtPengadaanNama.AutoCompleteMode = AutoCompleteMode.SuggestAppend
             LoadGrid(dgvPersediaanBB, SelectMaterials)
             LoadGrid(dgvPengadaanBB, SelectPurchases)
-            LoadGrid(dgvCekPenggunaanBB, SelectWarehouseUsage)
+            ReloadUsageGrid()
             LoadGrid(dgvCekPenjualan, SelectSalesSummary)
             LoadGrid(dgvHitungEOQ, SelectEoq, keyColumn:=5)
             LoadGrid(dgvHitungROP, SelectRop, keyColumn:=7)
+        End Sub
+
+        Private Sub ReloadUsageGrid()
+            LoadGrid(dgvCekPenggunaanBB, SelectWarehouseUsage, keyColumn:=6)
+            dgvCekPenggunaanBB.Refresh()
         End Sub
 
         Private Sub SaveMaterial(previousCode As String, fields As String())
@@ -276,26 +295,63 @@ Namespace Shoelusi
             txtsafetystock.Clear()
             txtreoderpoint.Clear()
 
+            For Each input In {txtROPAvg, txtROPMax, txtROPLTAvg, txtROPLTMax}
+                ropErrorProvider.SetError(input, "")
+            Next
+
             Dim averageUse, maximumUse, averageLead, maximumLead, safety As Double
 
-            If Not ReadNumber(txtROPAvg.Text, averageUse) OrElse averageUse <= 0 OrElse
-               Not ReadNumber(txtROPLTAvg.Text, averageLead) OrElse averageLead <= 0 Then Return
+            If Not ReadNumber(txtROPAvg.Text, averageUse) OrElse averageUse <= 0 Then
+                ropErrorProvider.SetError(txtROPAvg, "Isi pemakaian rata-rata dengan angka lebih besar dari 0.")
+                Return
+            End If
+
+            If Not ReadNumber(txtROPLTAvg.Text, averageLead) OrElse averageLead <= 0 Then
+                ropErrorProvider.SetError(txtROPLTAvg, "Isi lead time rata-rata dengan angka lebih besar dari 0.")
+                Return
+            End If
 
             Dim hasMaximumUse = txtROPMax.TextLength > 0
             Dim hasMaximumLead = txtROPLTMax.TextLength > 0
 
-            If hasMaximumUse <> hasMaximumLead Then Return
+            If hasMaximumUse <> hasMaximumLead Then
+                If Not hasMaximumUse Then
+                    ropErrorProvider.SetError(txtROPMax, "Isi pemakaian maksimum atau kosongkan kedua nilai maksimum.")
+                End If
+                If Not hasMaximumLead Then
+                    ropErrorProvider.SetError(txtROPLTMax, "Isi lead time maksimum atau kosongkan kedua nilai maksimum.")
+                End If
+                Return
+            End If
 
             If hasMaximumUse Then
-                If Not ReadNumber(txtROPMax.Text, maximumUse) OrElse
-                   Not ReadNumber(txtROPLTMax.Text, maximumLead) OrElse
-                   maximumUse < averageUse OrElse maximumLead < averageLead Then Return
+                If Not ReadNumber(txtROPMax.Text, maximumUse) OrElse maximumUse <= 0 Then
+                    ropErrorProvider.SetError(txtROPMax, "Isi pemakaian maksimum dengan angka lebih besar dari 0.")
+                    Return
+                End If
+
+                If Not ReadNumber(txtROPLTMax.Text, maximumLead) OrElse maximumLead <= 0 Then
+                    ropErrorProvider.SetError(txtROPLTMax, "Isi lead time maksimum dengan angka lebih besar dari 0.")
+                    Return
+                End If
+
+                If maximumUse < averageUse Then
+                    ropErrorProvider.SetError(txtROPMax, "Pemakaian maksimum tidak boleh lebih kecil dari pemakaian rata-rata.")
+                    Return
+                End If
+
+                If maximumLead < averageLead Then
+                    ropErrorProvider.SetError(txtROPLTMax, "Lead time maksimum tidak boleh lebih kecil dari lead time rata-rata.")
+                    Return
+                End If
 
                 safety = Math.Max(0, maximumUse * maximumLead - averageUse * averageLead)
             ElseIf storedSafetyStock.HasValue AndAlso
                    txtROPAvg.Text = storedDemand AndAlso txtROPLTAvg.Text = storedLeadTime Then
                 safety = storedSafetyStock.Value
             Else
+                ropErrorProvider.SetError(txtROPMax, "Isi pemakaian maksimum dan lead time maksimum untuk menghitung safety stock.")
+                ropErrorProvider.SetError(txtROPLTMax, "Isi lead time maksimum dan pemakaian maksimum untuk menghitung safety stock.")
                 Return
             End If
 
@@ -321,6 +377,14 @@ Namespace Shoelusi
         End Sub
 
         Private Sub SaveRop()
+            UpdateRop()
+
+            If txtreoderpoint.TextLength = 0 OrElse
+               {txtROPAvg, txtROPMax, txtROPLTAvg, txtROPLTMax}.Any(Function(input) ropErrorProvider.GetError(input).Length > 0) Then
+                MessageBox.Show("Periksa kembali data ROP. Pemakaian dan lead time rata-rata harus lebih dari 0. Jika mengisi nilai maksimum, isi keduanya dan pastikan nilainya tidak lebih kecil dari rata-rata.", "Validasi ROP", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
+            End If
+
             Dim row = ActualSelection(dgvHitungROP)
 
             If row Is Nothing OrElse txtreoderpoint.TextLength = 0 Then
@@ -386,7 +450,13 @@ Namespace Shoelusi
             dgvHitungROP.CurrentCell = Nothing
             dgvHitungROP.ClearSelection()
             storedSafetyStock = Nothing
+            storedDemand = Nothing
+            storedLeadTime = Nothing
             ClearInputs({txtROPAvg, txtROPMax, txtROPLTAvg, txtROPLTMax, txtsafetystock, txtreoderpoint})
+
+            For Each input In {txtROPAvg, txtROPMax, txtROPLTAvg, txtROPLTMax}
+                ropErrorProvider.SetError(input, "")
+            Next
         End Sub
 
         Private Function ReadNumber(value As String, ByRef result As Double) As Boolean
