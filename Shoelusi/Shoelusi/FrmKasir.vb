@@ -129,10 +129,10 @@ Namespace Shoelusi
 
             AddHandler cmbProdukLayananRuntime.SelectedValueChanged, AddressOf ProductServiceChanged
             AddHandler dgvProdukRuntime.SelectionChanged, AddressOf ProductGridSelectionChanged
-            AddHandler btnTambahProdukRuntime.Click, AddressOf AddProduct
-            AddHandler btnUbahProdukRuntime.Click, AddressOf UpdateProduct
-            AddHandler btnHapusProdukRuntime.Click, AddressOf RemoveProduct
-            AddHandler btnBersihkanProdukRuntime.Click, AddressOf ClearProductEditor
+            AddHandler btnTambahProdukRuntime.Click, Sub(sender, e) AddProduct()
+            AddHandler btnUbahProdukRuntime.Click, Sub(sender, e) UpdateProduct()
+            AddHandler btnHapusProdukRuntime.Click, Sub(sender, e) RemoveProduct()
+            AddHandler btnBersihkanProdukRuntime.Click, Sub(sender, e) ClearProductEditor()
         End Sub
 
         Private Function AddProductLabel(parent As Control, caption As String, x As Integer, y As Integer, width As Integer) As Label
